@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet"  href="problemas_fisica.css">
+  <title>Calculadora de Física Avanzada</title>
+
+</head>
+<body>
+  <div class="container">
+    <h2>Calculadora de Física</h2>
+    <p>Selecciona el sistema de unidades:</p>
+    <select id="sistema" onchange="actualizarFormulario()">
+      <option value="MKS">MKS (metros, segundos, m/s)</option>
+      <option value="Ingles">Sistema Inglés (pies, segundos, ft/s)</option>
+      <option value="CGS">CGS (centímetros, segundos, cm/s)</option>
+    </select>
+    
+    <p>Selecciona el tipo de cálculo:</p>
+    <select id="tipoCalculo" onchange="actualizarFormulario()">
+      <option value="MRU">Cinemática - MRU</option>
+      <option value="MRUA">Cinemática - MRUA</option>
+      <option value="Dinamica">Dinámica</option>
+      <option value="Hidraulica">Hidráulica</option>
+      <option value="Termodinamica">Termodinamica</option>
+      <option value="OndasOptica">Ondas y Óptica</option>
+      
+
+    </select>
+    
+    <!-- Aquí se generará dinámicamente el formulario según la opción elegida -->
+    <div id="formulario"></div>
+    
+    <button type="button" onclick="calcular()">Calcular</button>
+    <div class="result" id="resultado"></div>
+  </div>
+  
+  <!-- Aquí se carga el archivo JavaScript con la lógica (puedes incluirlo en línea si lo prefieres) -->
+  <script src="problemas _fisica.js"></script>
+</body>
+</html>
