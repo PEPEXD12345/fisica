@@ -226,7 +226,97 @@ function actualizarFormulario() {
                               `<p>v = d / t</p>` +
                               `<p>v = ${d} ${unitD} / ${t} s = ${v.toFixed(2)} ${unitV}</p>`;
       }
+     } else if (movimiento === "MRUC"){
+      function actualizarFormulario() {
+        var sistema = document.getElementById("sistema").value;
+        var movimiento = document.getElementById("movimiento").value;
+        var formulario = document.getElementById("formulario");
+        var unitD, unitV, unitA;
+        
+        // Definir unidades según el sistema
+        if (sistema === "MKS") {
+          unitD = "m";
+          unitV = "m/s";
+          unitA = "m/s²";
+        } else if (sistema === "Ingles") {
+          unitD = "ft";
+          unitV = "ft/s";
+          unitA = "ft/s²";
+        } else if (sistema === "CGS") {
+          unitD = "cm";
+          unitV = "cm/s";
+          unitA = "cm/s²";
+        }
+
+     
+        
+      // variables para MRUC (usamos la ecuación T = 1/F  )
+      var periodo  = document.getElementById("perido").value;
+      var uno = document.getElementById("uno").value;
+      var frecuencia = document.getElementById("frecuencia").value;
+       
+      // contar campos vacíos
+        var countEmpty = 0;
+        if ( periodo === "") countEmpty++;
+        if ( uno === "" ) countEmpty++;
+        if (frecuencia === "") countEmpty++;
+
+        if (countEmpty !== 1) {
+          resultado.innerHTML = "para el movimiento circular , ingresar dos valores.";
+          return;
+        }
+        if (periodo == "") {
+          var uno = 1 ;
+          var f = parseFloat(frecuencia);
+          var T =  1 / f ;
+          resultado.innerHTML = "<p><strong>MRUC: Calculo de perido  (T):</strong></p>"
+         + `<p>T = 1 / f<p>^` +
+          `<p>T = ${1} ${unitV} / ${f} = ${T.toFixed(2)} ${unitD}</p>^`
+        }
+        else if (frecuencia == "") {
+          var T = parseFloat(frecuencia);
+          var uno = 1;
+          if (T === 0 ) {
+            resultado.innerHTML =  "El periodo no puede ser  0.";
+            return;
+
+          }
+          var f = uno / T;
+          resultado.innerHTML = "<p><strong>Movimiento circular (f):</strong></p>" +
+                                `<p> f = 1 / T <p>` +
+                                `<p> f = ${1} / ${T} ${unitV} = ${f.toFixed(2)}</p>`
+        }
+      }
+      function actualizarFormulario() {
+        var sistema = document.getElementById("sistema").value;
+        var movimiento = document.getElementById("movimiento").value;
+        var formulario = document.getElementById("formulario");
+        var unitD, unitV, unitA;
+        // Definir unidades según el sistema
+    if (sistema === "MKS") {
+      unitD = "m";
+      unitV = "m/s";
+      unitA = "m/s²";
+    } else if (sistema === "Ingles") {
+      unitD = "ft";
+      unitV = "ft/s";
+      unitA = "ft/s²";
+    } else if (sistema === "CGS") {
+      unitD = "cm";
+      unitV = "cm/s";
+      unitA = "cm/s²";
+    }   
+    if (movimiento === "MRUC") {
       
+      `<label id="labelT">Periodo (T) en s: </label>`
+      `<input type ="number" step="any" id="tiempo" placeholder=" Ingresa T o dejalo vacío">^`;
+      
+      `<label id="lablef">Frecuencia (f) en Hz: </label>^`
+      `<input type="number" step="any" id="f" placeholder= "ingresa la frecuencia">`
+
+    }
+    }
+
     } else if (movimiento === "MRUA") {
       // Variables para MRUA (usamos la ecuación: v_f = v_i + a * t)
       var vi = document.getElementById("vi").value;
@@ -329,6 +419,20 @@ function actualizarFormulario() {
         
         <label id="labelTiempo">Tiempo (t) en s:</label>
         <input type="number" step="any" id="tiempo" placeholder="Ingresa t o déjalo vacío">
+      `;
+
+    } else if (tipo === "MRUC") {
+      // Cinemática - MRUA: v₍f₎ = v₍i₎ + a ⋅ t
+      html = `
+        <label id="label1"> 1 :</label>
+        <input type="number" step="any" id="vi" placeholder="Ingresa 1">
+        
+        <label id="labelf">frecuencia:</label>
+        <input type="number" step="any" id="f" placeholder="Ingresa frecuencia">
+        
+      
+        <label id="labelT">Periodo (T) en s:</label>
+        <input type="number" step="any" id="tiempo" placeholder="Ingresa Perido (T) ">
       `;
     } else if (tipo === "Dinamica") {
       // Dinámica: se añade un submenú para elegir la fórmula dinámica
@@ -758,6 +862,19 @@ function actualizarFormulario() {
         <label id="labelVelocidad">Velocidad (v):</label>
         <input type="number" step="any" id="velocidad" placeholder="Ingresa v o déjalo vacío">
       `;
+
+      if (tipo === "MRUC") {
+        // Cinemática - MRU: d = v ⋅ t
+        html = `
+          <label id="label1">1:</label>
+          <input type="number" step="any" id="one" placeholder="Ingresa el numero 1">
+          
+          <label id="labelT">Periodo (t) en s:</label>
+          <input type="number" step="any" id="T" placeholder="Ingresa T">
+          
+          <label id="labelf">Frecuencia (f):</label>
+          <input type="number" step="any" id="f" placeholder="Ingresa f">
+        `; 
     } else if (tipo === "MRUA") {
       // Cinemática - MRUA: v₍f₎ = v₍i₎ + a ⋅ t
       html = `
@@ -773,6 +890,7 @@ function actualizarFormulario() {
         <label id="labelTiempo">Tiempo (t) en s:</label>
         <input type="number" step="any" id="tiempo" placeholder="Ingresa t o déjalo vacío">
       `;
+    }
     } else if (tipo === "Dinamica") {
       // Dinámica: se añade un submenú para elegir la fórmula dinámica
       html = `
@@ -2781,4 +2899,782 @@ function actualizarFormulario() {
       }
     }
   }
+  // Correcciones y optimización del código JavaScript para la calculadora de física
+
+// Función para actualizar las etiquetas y placeholders según el sistema seleccionado
+function actualizarEtiquetas(sistema) {
+  const etiquetas = {
+    MKS: { espacio: "Espacio (d) en metros (m):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en m/s:" },
+    Ingles: { espacio: "Espacio (d) en pies (ft):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en ft/s:" },
+    CGS: { espacio: "Espacio (d) en centímetros (cm):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en cm/s:" }
+  };
+  
+  document.getElementById("labelEspacio").innerText = etiquetas[sistema].espacio;
+  document.getElementById("labelTiempo").innerText = etiquetas[sistema].tiempo;
+  document.getElementById("labelVelocidad").innerText = etiquetas[sistema].velocidad;
+}
+
+// Función para generar el formulario dinámico según el tipo de cálculo seleccionado
+function actualizarFormulario() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const formulario = document.getElementById("formulario");
+  let html = "";
+  
+  if (tipo === "MRU") {
+    html = generarFormularioMRU();
+  } else if (tipo === "MRUA") {
+    html = generarFormularioMRUA();
+  } else if (tipo === "MRUC") {
+    html = generarFormularioMRUC();
+  } else if (tipo === "Dinamica") {
+    html = generarFormularioDinamica();
+  } else if (tipo === "OndasOptica") {
+    html = generarFormularioOndasOptica();
+  }
+  
+  formulario.innerHTML = html;
+}
+
+// Generar formulario para MRU
+function generarFormularioMRU() {
+  return `
+    <label id="labelEspacio">Espacio (d):</label>
+    <input type="number" step="any" id="espacio" placeholder="Ingresa d o déjalo vacío">
     
+    <label id="labelTiempo">Tiempo (t) en s:</label>
+    <input type="number" step="any" id="tiempo" placeholder="Ingresa t o déjalo vacío">
+    
+    <label id="labelVelocidad">Velocidad (v):</label>
+    <input type="number" step="any" id="velocidad" placeholder="Ingresa v o déjalo vacío">
+  `;
+}
+
+// Generar formulario para MRUA
+function generarFormularioMRUA() {
+  return `
+    <label id="labelVi">Velocidad Inicial (v<sub>i</sub>):</label>
+    <input type="number" step="any" id="vi" placeholder="Ingresa v<sub>i</sub> o déjalo vacío">
+    
+    <label id="labelVf">Velocidad Final (v<sub>f</sub>):</label>
+    <input type="number" step="any" id="vf" placeholder="Ingresa v<sub>f</sub> o déjalo vacío">
+    
+    <label id="labelAceleracion">Aceleración (a):</label>
+    <input type="number" step="any" id="aceleracion" placeholder="Ingresa a o déjalo vacío">
+    
+    <label id="labelTiempo">Tiempo (t) en s:</label>
+    <input type="number" step="any" id="tiempo" placeholder="Ingresa t o déjalo vacío">
+  `;
+}
+
+// Generar formulario para MRUC
+function generarFormularioMRUC() {
+  return `
+    <label id="labelPeriodo">Periodo (T) en s:</label>
+    <input type="number" step="any" id="periodo" placeholder="Ingresa T o déjalo vacío">
+    
+    <label id="labelFrecuencia">Frecuencia (f) en Hz:</label>
+    <input type="number" step="any" id="frecuencia" placeholder="Ingresa f o déjalo vacío">
+  `;
+}
+
+// Generar formulario para Óptica y Ondas
+function generarFormularioOndasOptica() {
+  return `
+    <label id="labelLongitudOnda">Longitud de Onda (λ) en m:</label>
+    <input type="number" step="any" id="longitudOnda" placeholder="Ingresa λ o déjalo vacío">
+    
+    <label id="labelFrecuenciaOnda">Frecuencia (f) en Hz:</label>
+    <input type="number" step="any" id="frecuenciaOnda" placeholder="Ingresa f o déjalo vacío">
+    
+    <label id="labelVelocidadOnda">Velocidad de Onda (v) en m/s:</label>
+    <input type="number" step="any" id="velocidadOnda" placeholder="Ingresa v o déjalo vacío">
+  `;
+}
+
+// Función para calcular valores según el tipo de cálculo
+function calcular() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = ""; // Limpiar resultado previo
+  
+  if (tipo === "MRU") {
+    calcularMRU(resultado);
+  } else if (tipo === "MRUA") {
+    calcularMRUA(resultado);
+  } else if (tipo === "MRUC") {
+    calcularMRUC(resultado);
+  } else if (tipo === "OndasOptica") {
+    calcularOndasOptica(resultado);
+  }
+}
+
+// Función para cálculo de MRU
+function calcularMRU(resultado) {
+  const espacio = parseFloat(document.getElementById("espacio").value);
+  const tiempo = parseFloat(document.getElementById("tiempo").value);
+  const velocidad = parseFloat(document.getElementById("velocidad").value);
+  
+  let countEmpty = 0;
+  if (isNaN(espacio)) countEmpty++;
+  if (isNaN(tiempo)) countEmpty++;
+  if (isNaN(velocidad)) countEmpty++;
+  
+  if (countEmpty !== 1) {
+    resultado.innerHTML = "Por favor, ingresa exactamente dos valores.";
+    return;
+  }
+  
+  if (isNaN(espacio)) {
+    resultado.innerHTML = `Espacio (d) = Velocidad (v) ⋅ Tiempo (t) = ${velocidad.toFixed(2)} ⋅ ${tiempo.toFixed(2)} = ${(velocidad * tiempo).toFixed(2)} m`;
+  } else if (isNaN(tiempo)) {
+    resultado.innerHTML = `Tiempo (t) = Espacio (d) / Velocidad (v) = ${espacio.toFixed(2)} / ${velocidad.toFixed(2)} = ${(espacio / velocidad).toFixed(2)} s`;
+  } else if (isNaN(velocidad)) {
+    resultado.innerHTML = `Velocidad (v) = Espacio (d) / Tiempo (t) = ${espacio.toFixed(2)} / ${tiempo.toFixed(2)} = ${(espacio / tiempo).toFixed(2)} m/s`;
+  }
+}
+
+// Función para cálculo de Óptica y Ondas
+function calcularOndasOptica(resultado) {
+  const longitudOnda = parseFloat(document.getElementById("longitudOnda").value);
+  const frecuenciaOnda = parseFloat(document.getElementById("frecuenciaOnda").value);
+  const velocidadOnda = parseFloat(document.getElementById("velocidadOnda").value);
+  
+  let countEmpty = 0;
+  if (isNaN(longitudOnda)) countEmpty++;
+  if (isNaN(frecuenciaOnda)) countEmpty++;
+  if (isNaN(velocidadOnda)) countEmpty++;
+  
+  if (countEmpty !== 1) {
+    resultado.innerHTML = "Por favor, ingresa exactamente dos valores.";
+    return;
+  }
+  
+  if (isNaN(longitudOnda)) {
+    resultado.innerHTML = `Longitud de Onda (λ) = Velocidad (v) / Frecuencia (f) = ${velocidadOnda.toFixed(2)} / ${frecuenciaOnda.toFixed(2)} = ${(velocidadOnda / frecuenciaOnda).toFixed(2)} m`;
+  } else if (isNaN(frecuenciaOnda)) {
+    resultado.innerHTML = `Frecuencia (f) = Velocidad (v) / Longitud de Onda (λ) = ${velocidadOnda.toFixed(2)} / ${longitudOnda.toFixed(2)} = ${(velocidadOnda / longitudOnda).toFixed(2)} Hz`;
+  } else if (isNaN(velocidadOnda)) {
+    resultado.innerHTML = `Velocidad de Onda (v) = Longitud de Onda (λ) ⋅ Frecuencia (f) = ${longitudOnda.toFixed(2)} ⋅ ${frecuenciaOnda.toFixed(2)} = ${(longitudOnda * frecuenciaOnda).toFixed(2)} m/s`;
+  }
+}
+// Correcciones y optimización del código JavaScript para la calculadora de física con nuevas funciones para Óptica y Ondas
+
+// Función para actualizar las etiquetas y placeholders según el sistema seleccionado
+function actualizarEtiquetas(sistema) {
+  const etiquetas = {
+    MKS: { espacio: "Espacio (d) en metros (m):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en m/s:" },
+    Ingles: { espacio: "Espacio (d) en pies (ft):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en ft/s:" },
+    CGS: { espacio: "Espacio (d) en centímetros (cm):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en cm/s:" }
+  };
+  document.getElementById("labelEspacio").innerText = etiquetas[sistema].espacio;
+  document.getElementById("labelTiempo").innerText = etiquetas[sistema].tiempo;
+  document.getElementById("labelVelocidad").innerText = etiquetas[sistema].velocidad;
+}
+
+// Función para generar el formulario dinámico según el tipo de cálculo seleccionado
+function actualizarFormulario() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const formulario = document.getElementById("formulario");
+  let html = "";
+  switch (tipo) {
+    case "MRU":
+      html = generarFormularioMRU();
+      break;
+    case "MRUA":
+      html = generarFormularioMRUA();
+      break;
+    case "MRUC":
+      html = generarFormularioMRUC();
+      break;
+    case "Dinamica":
+      html = generarFormularioDinamica();
+      break;
+    case "OndasOptica":
+      html = generarFormularioOndasOptica();
+      break;
+  }
+  formulario.innerHTML = html;
+}
+
+// Generar formulario para MRU
+function generarFormularioMRU() {
+  return `
+    <label>Espacio (d):</label>
+    <input type="number" step="any" id="espacio" placeholder="Ingresa d o déjalo vacío">
+    <label>Tiempo (t) en s:</label>
+    <input type="number" step="any" id="tiempo" placeholder="Ingresa t o déjalo vacío">
+    <label>Velocidad (v):</label>
+    <input type="number" step="any" id="velocidad" placeholder="Ingresa v o déjalo vacío">
+  `;
+}
+
+// Generar formulario para MRUA
+function generarFormularioMRUA() {
+  return `
+    <label>Velocidad Inicial (v<sub>i</sub>):</label>
+    <input type="number" step="any" id="vi" placeholder="Ingresa v<sub>i</sub> o déjalo vacío">
+    <label>Velocidad Final (v<sub>f</sub>):</label>
+    <input type="number" step="any" id="vf" placeholder="Ingresa v<sub>f</sub> o déjalo vacío">
+    <label>Aceleración (a):</label>
+    <input type="number" step="any" id="aceleracion" placeholder="Ingresa a o déjalo vacío">
+    <label>Tiempo (t) en s:</label>
+    <input type="number" step="any" id="tiempo" placeholder="Ingresa t o déjalo vacío">
+  `;
+}
+
+// Generar formulario para MRUC
+function generarFormularioMRUC() {
+  return `
+    <label>Periodo (T) en s:</label>
+    <input type="number" step="any" id="periodo" placeholder="Ingresa T o déjalo vacío">
+    <label>Frecuencia (f) en Hz:</label>
+    <input type="number" step="any" id="frecuencia" placeholder="Ingresa f o déjalo vacío">
+  `;
+}
+
+// Generar formulario para Óptica y Ondas
+function generarFormularioOndasOptica() {
+  return `
+    <label>Longitud de Onda (λ) en m:</label>
+    <input type="number" step="any" id="longitudOnda" placeholder="Ingresa λ o déjalo vacío">
+    <label>Frecuencia (f) en Hz:</label>
+    <input type="number" step="any" id="frecuenciaOnda" placeholder="Ingresa f o déjalo vacío">
+    <label>Velocidad de Onda (v) en m/s:</label>
+    <input type="number" step="any" id="velocidadOnda" placeholder="Ingresa v o déjalo vacío">
+    <label>Ángulo de incidencia (θ<sub>1</sub>) en grados:</label>
+    <input type="number" step="any" id="anguloIncidencia" placeholder="Ingresa θ<sub>1</sub>">
+    <label>Índice de refracción 1 (n<sub>1</sub>):</label>
+    <input type="number" step="any" id="indice1" placeholder="Ingresa n<sub>1</sub>">
+    <label>Índice de refracción 2 (n<sub>2</sub>):</label>
+    <input type="number" step="any" id="indice2" placeholder="Ingresa n<sub>2</sub>">
+  `;
+}
+
+// Función para calcular valores según el tipo de cálculo
+function calcular() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = ""; // Limpiar resultado previo
+  switch (tipo) {
+    case "MRU":
+      calcularMRU(resultado);
+      break;
+    case "MRUA":
+      calcularMRUA(resultado);
+      break;
+    case "MRUC":
+      calcularMRUC(resultado);
+      break;
+    case "OndasOptica":
+      calcularOndasOptica(resultado);
+      break;
+  }
+}
+
+// Función para cálculo de MRU
+function calcularMRU(resultado) {
+  const espacio = parseFloat(document.getElementById("espacio").value);
+  const tiempo = parseFloat(document.getElementById("tiempo").value);
+  const velocidad = parseFloat(document.getElementById("velocidad").value);
+  let countEmpty = 0;
+  if (isNaN(espacio)) countEmpty++;
+  if (isNaN(tiempo)) countEmpty++;
+  if (isNaN(velocidad)) countEmpty++;
+  if (countEmpty !== 1) {
+    resultado.innerHTML = "Por favor, ingresa exactamente dos valores.";
+    return;
+  }
+  if (isNaN(espacio)) {
+    resultado.innerHTML = `Espacio (d) = Velocidad (v) ⋅ Tiempo (t) = ${(velocidad * tiempo).toFixed(2)} m`;
+  } else if (isNaN(tiempo)) {
+    resultado.innerHTML = `Tiempo (t) = Espacio (d) / Velocidad (v) = ${(espacio / velocidad).toFixed(2)} s`;
+  } else {
+    resultado.innerHTML = `Velocidad (v) = Espacio (d) / Tiempo (t) = ${(espacio / tiempo).toFixed(2)} m/s`;
+  }
+}
+
+// Función para cálculo de Óptica y Ondas
+function calcularOndasOptica(resultado) {
+  const longitudOnda = parseFloat(document.getElementById("longitudOnda").value);
+  const frecuenciaOnda = parseFloat(document.getElementById("frecuenciaOnda").value);
+  const velocidadOnda = parseFloat(document.getElementById("velocidadOnda").value);
+  const anguloIncidencia = parseFloat(document.getElementById("anguloIncidencia").value);
+  const indice1 = parseFloat(document.getElementById("indice1").value);
+  const indice2 = parseFloat(document.getElementById("indice2").value);
+  let countEmpty = 0;
+  if (isNaN(longitudOnda)) countEmpty++;
+  if (isNaN(frecuenciaOnda)) countEmpty++;
+  if (isNaN(velocidadOnda)) countEmpty++;
+  if (countEmpty !== 1) {
+    resultado.innerHTML = "Por favor, ingresa exactamente dos valores para cálculo básico.";
+    return;
+  }
+  if (isNaN(longitudOnda)) {
+    resultado.innerHTML = `Longitud de Onda (λ) = Velocidad (v) / Frecuencia (f) = ${(velocidadOnda / frecuenciaOnda).toFixed(2)} m`;
+  } else if (isNaN(frecuenciaOnda)) {
+    resultado.innerHTML = `Frecuencia (f) = Velocidad (v) / Longitud de Onda (λ) = ${(velocidadOnda / longitudOnda).toFixed(2)} Hz`;
+  } else {
+    resultado.innerHTML = `Velocidad de Onda (v) = Longitud de Onda (λ) ⋅ Frecuencia (f) = ${(longitudOnda * frecuenciaOnda).toFixed(2)} m/s`;
+  }
+  if (!isNaN(anguloIncidencia) && !isNaN(indice1) && !isNaN(indice2)) {
+    const anguloRefraccion = Math.asin((indice1 / indice2) * Math.sin(anguloIncidencia * (Math.PI / 180))) * (180 / Math.PI);
+    resultado.innerHTML += `<br>Ángulo de Refracción (θ<sub>2</sub>) = ${anguloRefraccion.toFixed(2)}°`;
+  }
+}
+// Correcciones y optimización del código JavaScript para la calculadora de física con funciones para Dinámica y Óptica y Ondas avanzadas
+
+// Función para actualizar las etiquetas y placeholders según el sistema seleccionado
+function actualizarEtiquetas(sistema) {
+  const etiquetas = {
+    MKS: { espacio: "Espacio (d) en metros (m):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en m/s:" },
+    Ingles: { espacio: "Espacio (d) en pies (ft):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en ft/s:" },
+    CGS: { espacio: "Espacio (d) en centímetros (cm):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en cm/s:" }
+  };
+  document.getElementById("labelEspacio").innerText = etiquetas[sistema].espacio;
+  document.getElementById("labelTiempo").innerText = etiquetas[sistema].tiempo;
+  document.getElementById("labelVelocidad").innerText = etiquetas[sistema].velocidad;
+}
+
+// Función para generar el formulario dinámico según el tipo de cálculo seleccionado
+function actualizarFormulario() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const formulario = document.getElementById("formulario");
+  let html = "";
+  switch (tipo) {
+    case "MRU":
+      html = generarFormularioMRU();
+      break;
+    case "MRUA":
+      html = generarFormularioMRUA();
+      break;
+    case "MRUC":
+      html = generarFormularioMRUC();
+      break;
+    case "Dinamica":
+      html = generarFormularioDinamica();
+      break;
+    case "OndasOptica":
+      html = generarFormularioOndasOptica();
+      break;
+  }
+  formulario.innerHTML = html;
+}
+
+// Generar formulario para Dinámica
+function generarFormularioDinamica() {
+  return `
+    <p>Selecciona el tipo de cálculo:</p>
+    <select id="tipoDinamica" onchange="actualizarFormularioDinamica()">
+      <option value="Fuerza">Fuerza (F = m ⋅ a)</option>
+      <option value="Peso">Peso (W = m ⋅ g)</option>
+      <option value="Rozamiento">Fuerza de Rozamiento (f = μ ⋅ N)</option>
+      <option value="Trabajo">Trabajo (W = F ⋅ d ⋅ cos(θ))</option>
+    </select>
+    <div id="formularioDinamica"></div>
+  `;
+}
+
+function actualizarFormularioDinamica() {
+  const tipoDinamica = document.getElementById("tipoDinamica").value;
+  const formularioDinamica = document.getElementById("formularioDinamica");
+  let html = "";
+  switch (tipoDinamica) {
+    case "Fuerza":
+      html = `
+        <label>Masa (m) en kg:</label>
+        <input type="number" step="any" id="masa" placeholder="Ingresa m">
+        <label>Aceleración (a) en m/s²:</label>
+        <input type="number" step="any" id="aceleracion" placeholder="Ingresa a">
+      `;
+      break;
+    case "Peso":
+      html = `
+        <label>Masa (m) en kg:</label>
+        <input type="number" step="any" id="masaPeso" placeholder="Ingresa m">
+        <label>Gravedad (g) en m/s² (por defecto 9.8):</label>
+        <input type="number" step="any" id="gravedad" value="9.8">
+      `;
+      break;
+    case "Rozamiento":
+      html = `
+        <label>Coeficiente de Rozamiento (μ):</label>
+        <input type="number" step="any" id="coeficienteRozamiento" placeholder="Ingresa μ">
+        <label>Normal (N) en N:</label>
+        <input type="number" step="any" id="normal" placeholder="Ingresa N">
+      `;
+      break;
+    case "Trabajo":
+      html = `
+        <label>Fuerza (F) en N:</label>
+        <input type="number" step="any" id="fuerza" placeholder="Ingresa F">
+        <label>Distancia (d) en m:</label>
+        <input type="number" step="any" id="distancia" placeholder="Ingresa d">
+        <label>Ángulo (θ) en grados:</label>
+        <input type="number" step="any" id="angulo" placeholder="Ingresa θ">
+      `;
+      break;
+  }
+  formularioDinamica.innerHTML = html;
+}
+
+// Función para calcular valores según el tipo de cálculo
+function calcular() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = ""; // Limpiar resultado previo
+  switch (tipo) {
+    case "MRU":
+      calcularMRU(resultado);
+      break;
+    case "MRUA":
+      calcularMRUA(resultado);
+      break;
+    case "MRUC":
+      calcularMRUC(resultado);
+      break;
+    case "Dinamica":
+      calcularDinamica(resultado);
+      break;
+    case "OndasOptica":
+      calcularOndasOptica(resultado);
+      break;
+  }
+}
+
+// Función para cálculo de Dinámica
+function calcularDinamica(resultado) {
+  const tipoDinamica = document.getElementById("tipoDinamica").value;
+  switch (tipoDinamica) {
+    case "Fuerza":
+      const masa = parseFloat(document.getElementById("masa").value);
+      const aceleracion = parseFloat(document.getElementById("aceleracion").value);
+      if (!isNaN(masa) && !isNaN(aceleracion)) {
+        resultado.innerHTML = `Fuerza (F) = m ⋅ a = ${(masa * aceleracion).toFixed(2)} N`;
+      }
+      break;
+    case "Peso":
+      const masaPeso = parseFloat(document.getElementById("masaPeso").value);
+      const gravedad = parseFloat(document.getElementById("gravedad").value);
+      if (!isNaN(masaPeso) && !isNaN(gravedad)) {
+        resultado.innerHTML = `Peso (W) = m ⋅ g = ${(masaPeso * gravedad).toFixed(2)} N`;
+      }
+      break;
+    case "Rozamiento":
+      const coeficienteRozamiento = parseFloat(document.getElementById("coeficienteRozamiento").value);
+      const normal = parseFloat(document.getElementById("normal").value);
+      if (!isNaN(coeficienteRozamiento) && !isNaN(normal)) {
+        resultado.innerHTML = `Fuerza de Rozamiento (f) = μ ⋅ N = ${(coeficienteRozamiento * normal).toFixed(2)} N`;
+      }
+      break;
+    case "Trabajo":
+      const fuerza = parseFloat(document.getElementById("fuerza").value);
+      const distancia = parseFloat(document.getElementById("distancia").value);
+      const angulo = parseFloat(document.getElementById("angulo").value);
+      if (!isNaN(fuerza) && !isNaN(distancia) && !isNaN(angulo)) {
+        const trabajo = fuerza * distancia * Math.cos(angulo * (Math.PI / 180));
+        resultado.innerHTML = `Trabajo (W) = F ⋅ d ⋅ cos(θ) = ${trabajo.toFixed(2)} J`;
+      }
+      break;
+  }
+}
+// Correcciones y optimización del código JavaScript para la calculadora de física con funciones para Dinámica, Termodinámica y Óptica y Ondas avanzadas
+
+// Función para actualizar las etiquetas y placeholders según el sistema seleccionado
+function actualizarEtiquetas(sistema) {
+  const etiquetas = {
+    MKS: { espacio: "Espacio (d) en metros (m):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en m/s:" },
+    Ingles: { espacio: "Espacio (d) en pies (ft):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en ft/s:" },
+    CGS: { espacio: "Espacio (d) en centímetros (cm):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en cm/s:" }
+  };
+  document.getElementById("labelEspacio").innerText = etiquetas[sistema].espacio;
+  document.getElementById("labelTiempo").innerText = etiquetas[sistema].tiempo;
+  document.getElementById("labelVelocidad").innerText = etiquetas[sistema].velocidad;
+}
+
+// Función para generar el formulario dinámico según el tipo de cálculo seleccionado
+function actualizarFormulario() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const formulario = document.getElementById("formulario");
+  let html = "";
+  switch (tipo) {
+    case "MRU":
+      html = generarFormularioMRU();
+      break;
+    case "MRUA":
+      html = generarFormularioMRUA();
+      break;
+    case "MRUC":
+      html = generarFormularioMRUC();
+      break;
+    case "Dinamica":
+      html = generarFormularioDinamica();
+      break;
+    case "Termodinamica":
+      html = generarFormularioTermodinamica();
+      break;
+    case "OndasOptica":
+      html = generarFormularioOndasOptica();
+      break;
+  }
+  formulario.innerHTML = html;
+}
+
+// Generar formulario para Termodinámica
+function generarFormularioTermodinamica() {
+  return `
+    <p>Selecciona el tipo de cálculo:</p>
+    <select id="tipoTermodinamica" onchange="actualizarFormularioTermodinamica()">
+      <option value="PrimeraLey">Primera Ley de la Termodinámica (ΔU = Q - W)</option>
+      <option value="CalorSensible">Calor Sensible (Q = m ⋅ c ⋅ ΔT)</option>
+      <option value="Eficiencia">Eficiencia de Máquina Térmica (η = W / Q<sub>in</sub>)</option>
+    </select>
+    <div id="formularioTermodinamica"></div>
+  `;
+}
+
+function actualizarFormularioTermodinamica() {
+  const tipoTermodinamica = document.getElementById("tipoTermodinamica").value;
+  const formularioTermodinamica = document.getElementById("formularioTermodinamica");
+  let html = "";
+  switch (tipoTermodinamica) {
+    case "PrimeraLey":
+      html = `
+        <label>Calor (Q) en J:</label>
+        <input type="number" step="any" id="calor" placeholder="Ingresa Q">
+        <label>Trabajo (W) en J:</label>
+        <input type="number" step="any" id="trabajo" placeholder="Ingresa W">
+      `;
+      break;
+    case "CalorSensible":
+      html = `
+        <label>Masa (m) en kg:</label>
+        <input type="number" step="any" id="masaCalor" placeholder="Ingresa m">
+        <label>Calor específico (c) en J/kg°C:</label>
+        <input type="number" step="any" id="calorEspecifico" placeholder="Ingresa c">
+        <label>Diferencia de temperatura (ΔT) en °C:</label>
+        <input type="number" step="any" id="deltaT" placeholder="Ingresa ΔT">
+      `;
+      break;
+    case "Eficiencia":
+      html = `
+        <label>Trabajo realizado (W) en J:</label>
+        <input type="number" step="any" id="trabajoEficiencia" placeholder="Ingresa W">
+        <label>Calor absorbido (Q<sub>in</sub>) en J:</label>
+        <input type="number" step="any" id="calorEntrada" placeholder="Ingresa Q<sub>in</sub>">
+      `;
+      break;
+  }
+  formularioTermodinamica.innerHTML = html;
+}
+
+// Función para calcular valores según el tipo de cálculo
+function calcular() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = ""; // Limpiar resultado previo
+  switch (tipo) {
+    case "MRU":
+      calcularMRU(resultado);
+      break;
+    case "MRUA":
+      calcularMRUA(resultado);
+      break;
+    case "MRUC":
+      calcularMRUC(resultado);
+      break;
+    case "Dinamica":
+      calcularDinamica(resultado);
+      break;
+    case "Termodinamica":
+      calcularTermodinamica(resultado);
+      break;
+    case "OndasOptica":
+      calcularOndasOptica(resultado);
+      break;
+  }
+}
+
+// Función para cálculo de Termodinámica
+function calcularTermodinamica(resultado) {
+  const tipoTermodinamica = document.getElementById("tipoTermodinamica").value;
+  switch (tipoTermodinamica) {
+    case "PrimeraLey":
+      const calor = parseFloat(document.getElementById("calor").value);
+      const trabajo = parseFloat(document.getElementById("trabajo").value);
+      if (!isNaN(calor) && !isNaN(trabajo)) {
+        resultado.innerHTML = `Cambio en la energía interna (ΔU) = Q - W = ${(calor - trabajo).toFixed(2)} J`;
+      }
+      break;
+    case "CalorSensible":
+      const masaCalor = parseFloat(document.getElementById("masaCalor").value);
+      const calorEspecifico = parseFloat(document.getElementById("calorEspecifico").value);
+      const deltaT = parseFloat(document.getElementById("deltaT").value);
+      if (!isNaN(masaCalor) && !isNaN(calorEspecifico) && !isNaN(deltaT)) {
+        const calorSensible = masaCalor * calorEspecifico * deltaT;
+        resultado.innerHTML = `Calor Sensible (Q) = m ⋅ c ⋅ ΔT = ${calorSensible.toFixed(2)} J`;
+      }
+      break;
+    case "Eficiencia":
+      const trabajoEficiencia = parseFloat(document.getElementById("trabajoEficiencia").value);
+      const calorEntrada = parseFloat(document.getElementById("calorEntrada").value);
+      if (!isNaN(trabajoEficiencia) && !isNaN(calorEntrada) && calorEntrada !== 0) {
+        const eficiencia = (trabajoEficiencia / calorEntrada) * 100;
+        resultado.innerHTML = `Eficiencia (η) = ${(eficiencia).toFixed(2)}%`;
+      }
+      break;
+  }
+}
+// Correcciones y optimización del código JavaScript para la calculadora de física con funciones para Dinámica, Termodinámica, Hidráulica y Óptica y Ondas avanzadas
+
+// Función para actualizar las etiquetas y placeholders según el sistema seleccionado
+function actualizarEtiquetas(sistema) {
+  const etiquetas = {
+    MKS: { espacio: "Espacio (d) en metros (m):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en m/s:" },
+    Ingles: { espacio: "Espacio (d) en pies (ft):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en ft/s:" },
+    CGS: { espacio: "Espacio (d) en centímetros (cm):", tiempo: "Tiempo (t) en segundos (s):", velocidad: "Velocidad (v) en cm/s:" }
+  };
+  document.getElementById("labelEspacio").innerText = etiquetas[sistema].espacio;
+  document.getElementById("labelTiempo").innerText = etiquetas[sistema].tiempo;
+  document.getElementById("labelVelocidad").innerText = etiquetas[sistema].velocidad;
+}
+
+// Función para generar el formulario dinámico según el tipo de cálculo seleccionado
+function actualizarFormulario() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const formulario = document.getElementById("formulario");
+  let html = "";
+  switch (tipo) {
+    case "MRU":
+      html = generarFormularioMRU();
+      break;
+    case "MRUA":
+      html = generarFormularioMRUA();
+      break;
+    case "MRUC":
+      html = generarFormularioMRUC();
+      break;
+    case "Dinamica":
+      html = generarFormularioDinamica();
+      break;
+    case "Termodinamica":
+      html = generarFormularioTermodinamica();
+      break;
+    case "Hidraulica":
+      html = generarFormularioHidraulica();
+      break;
+    case "OndasOptica":
+      html = generarFormularioOndasOptica();
+      break;
+  }
+  formulario.innerHTML = html;
+}
+
+// Generar formulario para Hidráulica
+function generarFormularioHidraulica() {
+  return `
+    <p>Selecciona el tipo de cálculo:</p>
+    <select id="tipoHidraulica" onchange="actualizarFormularioHidraulica()">
+      <option value="Presion">Presión (P = F / A)</option>
+      <option value="Pascal">Principio de Pascal (F<sub>2</sub> = F<sub>1</sub> ⋅ A<sub>2</sub> / A<sub>1</sub>)</option>
+      <option value="GastoVolumetrico">Gasto Volumétrico (Q = A ⋅ v)</option>
+    </select>
+    <div id="formularioHidraulica"></div>
+  `;
+}
+
+function actualizarFormularioHidraulica() {
+  const tipoHidraulica = document.getElementById("tipoHidraulica").value;
+  const formularioHidraulica = document.getElementById("formularioHidraulica");
+  let html = "";
+  switch (tipoHidraulica) {
+    case "Presion":
+      html = `
+        <label>Fuerza (F) en N:</label>
+        <input type="number" step="any" id="fuerzaPresion" placeholder="Ingresa F">
+        <label>Área (A) en m²:</label>
+        <input type="number" step="any" id="areaPresion" placeholder="Ingresa A">
+      `;
+      break;
+    case "Pascal":
+      html = `
+        <label>Fuerza 1 (F<sub>1</sub>) en N:</label>
+        <input type="number" step="any" id="fuerza1" placeholder="Ingresa F<sub>1</sub>">
+        <label>Área 1 (A<sub>1</sub>) en m²:</label>
+        <input type="number" step="any" id="area1" placeholder="Ingresa A<sub>1</sub>">
+        <label>Área 2 (A<sub>2</sub>) en m²:</label>
+        <input type="number" step="any" id="area2" placeholder="Ingresa A<sub>2</sub>">
+      `;
+      break;
+    case "GastoVolumetrico":
+      html = `
+        <label>Área (A) en m²:</label>
+        <input type="number" step="any" id="areaGasto" placeholder="Ingresa A">
+        <label>Velocidad (v) en m/s:</label>
+        <input type="number" step="any" id="velocidadGasto" placeholder="Ingresa v">
+      `;
+      break;
+  }
+  formularioHidraulica.innerHTML = html;
+}
+
+// Función para calcular valores según el tipo de cálculo
+function calcular() {
+  const tipo = document.getElementById("tipoCalculo").value;
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = ""; // Limpiar resultado previo
+  switch (tipo) {
+    case "MRU":
+      calcularMRU(resultado);
+      break;
+    case "MRUA":
+      calcularMRUA(resultado);
+      break;
+    case "MRUC":
+      calcularMRUC(resultado);
+      break;
+    case "Dinamica":
+      calcularDinamica(resultado);
+      break;
+    case "Termodinamica":
+      calcularTermodinamica(resultado);
+      break;
+    case "Hidraulica":
+      calcularHidraulica(resultado);
+      break;
+    case "OndasOptica":
+      calcularOndasOptica(resultado);
+      break;
+  }
+}
+
+// Función para cálculo de Hidráulica
+function calcularHidraulica(resultado) {
+  const tipoHidraulica = document.getElementById("tipoHidraulica").value;
+  switch (tipoHidraulica) {
+    case "Presion":
+      const fuerzaPresion = parseFloat(document.getElementById("fuerzaPresion").value);
+      const areaPresion = parseFloat(document.getElementById("areaPresion").value);
+      if (!isNaN(fuerzaPresion) && !isNaN(areaPresion) && areaPresion !== 0) {
+        const presion = fuerzaPresion / areaPresion;
+        resultado.innerHTML = `Presión (P) = F / A = ${presion.toFixed(2)} Pa`;
+      }
+      break;
+    case "Pascal":
+      const fuerza1 = parseFloat(document.getElementById("fuerza1").value);
+      const area1 = parseFloat(document.getElementById("area1").value);
+      const area2 = parseFloat(document.getElementById("area2").value);
+      if (!isNaN(fuerza1) && !isNaN(area1) && !isNaN(area2) && area1 !== 0) {
+        const fuerza2 = (fuerza1 * area2) / area1;
+        resultado.innerHTML = `Fuerza 2 (F<sub>2</sub>) = F<sub>1</sub> ⋅ A<sub>2</sub> / A<sub>1</sub> = ${fuerza2.toFixed(2)} N`;
+      }
+      break;
+    case "GastoVolumetrico":
+      const areaGasto = parseFloat(document.getElementById("areaGasto").value);
+      const velocidadGasto = parseFloat(document.getElementById("velocidadGasto").value);
+      if (!isNaN(areaGasto) && !isNaN(velocidadGasto)) {
+        const gastoVolumetrico = areaGasto * velocidadGasto;
+        resultado.innerHTML = `Gasto Volumétrico (Q) = A ⋅ v = ${gastoVolumetrico.toFixed(2)} m³/s`;
+      }
+      break;
+  }
+}
