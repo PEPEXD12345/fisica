@@ -7,112 +7,111 @@
 
 </head>
 <body>
-  <div class="container">
-    <h2>Calculadora de Física</h2>
-    <p>Selecciona el sistema de unidades:</p>
-    <select id="sistema" onchange="actualizarFormulario()">
-      <option value="MKS">MKS (metros, segundos, m/s)</option>
-      <option value="Ingles">Sistema Inglés (pies, segundos, ft/s)</option>
-      <option value="CGS">CGS (centímetros, segundos, cm/s)</option>
-    </select>
+    <div class="container">
+        <h2>Calculadora de Física</h2>
+        <p>Selecciona el sistema de unidades:</p>
+        <select id="sistema" onchange="actualizarFormulario()">
+          <option value="MKS">MKS (metros, segundos, m/s)</option>
+          <option value="Ingles">Sistema Inglés (pies, segundos, ft/s)</option>
+          <option value="CGS">CGS (centímetros, segundos, cm/s)</option>
+        </select>
+        
+        <p>Selecciona el tipo de cálculo:</p>
+        <select id="tipoCalculo" onchange="actualizarFormulario()">
+          <option value="MRU">Cinemática - MRU</option>
+          <option value="MRUA">Cinemática - MRUA</option>
+          <option value="MRUC">Movimiento circular</option>
+          <option value="Dinamica">Dinámica</option>
+          <!--
+          <option value="Hidraulica">Hidráulica</option>
+          <option value="Termodinamica">Termodinamica</option>
+          <option value="OndasOptica">Ondas y Óptica</option>-->
+          
     
-    <p>Selecciona el tipo de cálculo:</p>
-    <select id="tipoCalculo" onchange="actualizarFormulario()">
-      <option value="MRU">Cinemática - MRU</option>
-      <option value="MRUA">Cinemática - MRUA</option>
-      <option value="MRUC">Movimiento circular</option>
-      <option value="Dinamica">Dinámica</option>
-      <option value="Hidraulica">Hidráulica</option>
-      <option value="Termodinamica">Termodinamica</option>
-      <option value="OndasOptica">Ondas y Óptica</option>
-      
-
-    </select>
+        </select>
+        
+        <!-- Aquí se generará dinámicamente el formulario según la opción elegida -->
+        <div id="formulario"></div>
+        
+        <button type="button" onclick="calcular()">Calcular</button>
+        <div class="result" id="resultado"></div>
+      </div>
+      <div class="defs">
+      <h1> Definiciónes:</h1>
+      <h3>
+        1. Dinamica:<br>
+       <br>
+        En física, la dinámica es la parte de la mecánica que estudia el movimiento de los cuerpos y las causas que lo producen, principalmente las fuerzas. A diferencia de la cinemática, que solo describe el movimiento sin preocuparse por sus causas, la dinámica explica por qué y cómo ocurre el movimiento.  
+        <br>  <br>
+        Se basa en las Leyes de Newton:
+        <br>  <br>  
+        1. Primera ley (Ley de la inercia): Un cuerpo permanece en reposo o en movimiento rectilíneo uniforme si no actúa una fuerza sobre él.  
+        <br><br>  
+        
+        2. Segunda ley (Ley de la fuerza): La aceleración de un cuerpo es directamente proporcional a la fuerza neta aplicada e inversamente proporcional a su masa (F = m * a ).  
+        <br><br>  
     
-    <!-- Aquí se generará dinámicamente el formulario según la opción elegida -->
-    <div id="formulario"></div>
-    
-    <button type="button" onclick="calcular()">Calcular</button>
-    <div class="result" id="resultado"></div>
-  </div>
-  <div class="defs">
-  <h1> Definiciónes:</h1>
-  <h3>
-    1. Dinamica:<br>
-   <br>
-    En física, la dinámica es la parte de la mecánica que estudia el movimiento de los cuerpos y las causas que lo producen, principalmente las fuerzas. A diferencia de la cinemática, que solo describe el movimiento sin preocuparse por sus causas, la dinámica explica por qué y cómo ocurre el movimiento.  
-    <br>  <br>
-    Se basa en las Leyes de Newton:
-    <br>  <br>  
-    1. Primera ley (Ley de la inercia): Un cuerpo permanece en reposo o en movimiento rectilíneo uniforme si no actúa una fuerza sobre él.  
-    <br><br>  
-    
-    2. Segunda ley (Ley de la fuerza): La aceleración de un cuerpo es directamente proporcional a la fuerza neta aplicada e inversamente proporcional a su masa (F = m * a ).  
-    <br><br>  
-
-    3. Tercera ley (Acción y reacción): A toda acción le corresponde una reacción igual y opuesta.  
-    
-  </h3>
-
-  <h3>formula de Fuersa: </h3>
-  <img src="formula de fuersa.png">
-
-  
-  <h3>formula de peso: </h3>
-  <img src="formula de peso.png">
-
-  
-  <h3>formula de Fuerza de rozamiento : </h3>
-  <img src="formula de  fuerza de rosamiento.jpg">
-
-  
-  <h3>formula de Trabajo: </h3>
-  <img src="formula de trabajo.jpg">
-</div>
-
-<div class="defs">
-   
-  <h3>En física, la cinemática es la rama de la mecánica que estudia el movimiento de los cuerpos sin considerar las causas que lo producen, es decir, se enfoca en describir cómo se mueven, no por qué. Analiza aspectos como:   
-<br><br>
-    - Posición  
-    <br><br>
-    - Velocidad 
-    <br><br>
-    - Aceleración   
-    <br><br>
-    - Trayectoria   
-    <br><br>
-    Principales tipos de movimiento:  
-    <br><br>
-    1. Movimiento rectilíneo (línea recta):   
-    <br><br>
-       - Uniforme (MRU): velocidad constante.  
-       <br><br>
-       - Uniformemente acelerado (MRUA): la aceleración es constante.  
-       <br><br>
-    2. Movimiento circular: el cuerpo describe una trayectoria circular.   
-    
-    </h3>
-  <h3> Formula MRU ( movimiento rectilíneo uniforme):</h3>
-      <img src="MRU fisica.jpg">
+        3. Tercera ley (Acción y reacción): A toda acción le corresponde una reacción igual y opuesta.  
+        
       </h3>
-      <h3>Formula MRUA (movimiento Uniformemente acelerado):
-      <img src="MRUA fisica.png">
-    </h3>
-    <h3> formula de movimiento circular</h3>
+    
+      <h3>formula de Fuersa: </h3>
+      <img src="formula de fuersa.png">
+    
+      
+      <h3>formula de peso: </h3>
+      <img src="formula de peso.png">
+    
+      
+      <h3>formula de Fuerza de rozamiento : </h3>
+      <img src="formula de  fuerza de rosamiento.jpg">
+    
+      
+      <h3>formula de Trabajo: </h3>
+      <img src="formula de trabajo.jpg">
     </div>
-
-
+    
+    <div class="defs">
+       
+      <h3>En física, la cinemática es la rama de la mecánica que estudia el movimiento de los cuerpos sin considerar las causas que lo producen, es decir, se enfoca en describir cómo se mueven, no por qué. Analiza aspectos como:   
+    <br><br>
+        - Posición  
+        <br><br>
+        - Velocidad 
+        <br><br>
+        - Aceleración   
+        <br><br>
+        - Trayectoria   
+        <br><br>
+        Principales tipos de movimiento:  
+        <br><br>
+        1. Movimiento rectilíneo (línea recta):   
+        <br><br>
+           - Uniforme (MRU): velocidad constante.  
+           <br><br>
+           - Uniformemente acelerado (MRUA): la aceleración es constante.  
+           <br><br>
+        2. Movimiento circular: el cuerpo describe una trayectoria circular.   
+        
+        </h3>
+      <h3> Formula MRU ( movimiento rectilíneo uniforme):</h3>
+          <img src="MRU fisica.jpg">
+          </h3>
+          <h3>Formula MRUA (movimiento Uniformemente acelerado):
+          <img src="MRUA fisica.png">
+        </h3>
+        <h3> formula de movimiento circular</h3>
+        </div>
   <!-- Aquí se carga el archivo JavaScript con la lógica (puedes incluirlo en línea si lo prefieres) -->
   <script src="problemas _fisica.js"></script> 
-      <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HDW5L0K2T"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
-  gtag('config', 'G-8HDW5L0K2T');
+gtag('config', 'G-8HDW5L0K2T');
 </script>
 </body>
 </html>
